@@ -1,0 +1,105 @@
+version: '3'
+services:
+
+  proxy.local.thegodstack.com:
+    container_name: proxy.local.suntech.com
+    image: jwilder/nginx-proxy:alpine
+    volumes:
+      - "/var/run/docker.sock:/tmp/docker.sock:ro"
+      - "./proxy.conf:/etc/nginx/conf.d/my_proxy.conf:ro"
+    ports:
+      - "80:80"
+    restart: unless-stopped
+    networks:
+      main:
+        aliases:
+          - proxy.local.suntech.com
+
+  mariadb.local.suntech.com:
+    container_name: mariadb.local.suntech.com
+    image: mariadb:10.2.19
+    volumes:
+      - "./.data:/var/lib/mysql"
+    ports:
+      - '3306:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: 'suntech'
+    restart: unless-stopped
+    networks:
+      main:
+        aliases:
+          - mariadb.local.suntech.com
+
+  api.local.suntech.com:
+    container_name: api.local.suntech.com
+    image: suntech-nodejs-knex
+    restart: always
+    volumes:
+      - "./api/:/opt/app-root/src/:rw"
+    ports:
+      - 80
+    environment:
+      VIRTUAL_HOST: 'api.local.suntech.com'
+      PORT: 80
+      GRAPHQL_URI: 'http://api.local.suntech.com/'
+      GRAPHQL_LISTEN_PORT: 80
+      
+      ENV_ALIAS: 'development'
+      APP_ENV: 'development'
+      NODE_ENV: 'development'
+
+      HASH_SECRET: 'someserioussupersecrethash'
+      JWT_SECRET: 'jwtverydificultsecret'
+      TOKEN_EXPIRE_IN: '48h'
+
+      ADMIN_EMAIL: "admin@suntech.com"
+      ADMIN_PASSWORD: "suntech"
+      
+      WORKER: "on"
+      WORKER_EMAIL: "worker@suntech.com"
+      WORKER_PASSWORD: "suntech"
+      
+      MARIAHOST: "mariadb.local.suntech.com"
+      MARIAUSER: "root"
+      MARIADATABASE: "suntech"
+      MARIAPASSWORD: "suntech"
+      
+      MARIAHOSTMIGRATIONS: "mariadb.local.suntech.com"
+      MARIAUSERMIGRATIONS: "root"
+      MARIADATABASEMIGRATIONS: "suntech"
+      MARIAPASSWORDMIGRATIONS: "suntech"
+      
+      MARIAPORT: "3306"
+      DEBUG: 'True'
+    # command: sleep 5d
+    command: ['./wait-for-it.sh', '-t', '0', 'mariadb.local.suntech.com:3306', '--', '.s2i/bin/assemble']
+    networks:
+      main:
+        aliases:
+          - api.local.suntech.com
+
+  spa.local.suntech.com:
+    container_name: spa.local.suntech.com
+    image: suntech-nodejs-knex
+    restart: always
+    ports:
+      - 80
+    volumes:
+      - "./spa:/opt/app-root/src:rw"
+    environment:
+      VIRTUAL_HOST: 'spa.local.suntech.com'
+      VIRTUAL_PORT: 80
+      PORT: 80
+      APP_ENV: 'development'
+      ENV_ALIAS: 'development'
+      NODE_ENV: 'development'
+      API_URL: 'http://api.local.suntech.com/'
+      WS_URL: 'ws://api.local.suntech.com/graphql'
+    command: ['./wait-for-it.sh', '-t', '0', 'api.local.suntech.com:80', '--', '.s2i/bin/assemble']
+    networks:
+      main:
+        aliases:
+          - spa.local.suntech.com
+
+networks:
+  main:
