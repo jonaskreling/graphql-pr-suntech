@@ -101,7 +101,6 @@ const inputUserData = `
     familyName: String!
     email: String!
     password: String!
-    language: EnumLanguage!
     id_user_profile: Int!
     active: Boolean!
   }
