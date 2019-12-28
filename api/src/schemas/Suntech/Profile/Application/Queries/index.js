@@ -1,4 +1,4 @@
-import { Profiles } from './Profiles'
+import Profiles from './Profiles'
 
 export default {
   Profiles
