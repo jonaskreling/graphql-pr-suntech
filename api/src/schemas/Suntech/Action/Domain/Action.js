@@ -1,16 +1,24 @@
 /* Definition */
-export const ActionDomain = `
-type Action {
-  id: Int
-  name: String!
-  description: String!
-  type: String!
-}
+const domainAction = `
+  type Action {
+    id: Int
+    name: String!
+    description: String!
+    type: String!
+  }
+`
+
+export const domain = `
+  ${domainAction}
 `
 
 /* QUERIES */
-export const ActionQueries = `
+const queryAction = `
   Actions: [Action]
+`
+
+export const queries = `
+  ${queryAction}
 `
 
 /* MUTATIONS */
