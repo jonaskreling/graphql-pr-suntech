@@ -90,6 +90,7 @@ services:
       VIRTUAL_HOST: 'spa.local.suntech.com'
       VIRTUAL_PORT: 80
       PORT: 80
+      HOST: 'spa.local.suntech.com'
       APP_ENV: 'development'
       ENV_ALIAS: 'development'
       NODE_ENV: 'development'
