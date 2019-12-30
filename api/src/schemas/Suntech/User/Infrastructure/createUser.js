@@ -2,15 +2,13 @@ import { ApolloError } from 'apollo-server'
 import crypto from 'crypto'
 import listUsers from './listUsers'
 
-export default ({ dadosUser }, ctx) => {
-  const { password, ...dados } = dadosUser
+export default ({ userData }, ctx) => {
+  const { password, ...dados } = userData
   return (
     ctx.knex('user')
       .insert({
         ...dados,
         password: crypto.createHmac('sha256', process.env.HASH_SECRET).update(password).digest('hex'),
-        createdby: ctx.user.id,
-        updatedby: ctx.user.id,
       }, 'id')
       .then(data => {
         if(!data[0]) return null

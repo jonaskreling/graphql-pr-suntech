@@ -3,49 +3,38 @@ const domainUser = `
   type User {
     id: Int
     name: String!
+    surname: String!
     email: String!
     phone: String
     username: String!
     password: String! @hideTheField
     deleted: Boolean!
     enabled: Boolean!
-    profiles: [Profile]
-  }
-`
-
-const domainUserLogin = `
-  type UserLogin {
-    token: String
+    createdat: Date
   }
 `
 
 export const domain = `
   ${domainUser}
-  ${domainUserLogin}
 `
 
 /* QUERIES */
 const queryUsers = `
   Users(
-    filters: usersFilters
+    filtros: usersFilters
     pagination: pagination
   ): [User]
 `
 
-const queryUserLogin = `
-  UserLogin (
-    userLoginInput: userLoginInput
-  ): UserLogin
-`
-
-const queryRefreshToken = `
-  RefreshToken: UserLogin
+const queryHasEmail = `
+  HasEmail(
+    filtros: usersFilters
+  ): Boolean
 `
 
 export const queries = `
   ${queryUsers}
-  ${queryUserLogin}
-  ${queryRefreshToken}
+  ${queryHasEmail}
 `
 
 /* MUTATIONS */
@@ -55,15 +44,8 @@ const mutationUser = `
   ): [User]
 `
 
-const mutationToggleUser = `
-  ToggleUser (
-    id: Int!
-  ): [User]
-`
-
 export const mutations = `
   ${mutationUser}
-  ${mutationToggleUser}
 `
 
 /* SUBSCRIPTIONS */
@@ -71,13 +53,6 @@ export const UserSubscriptions = `
 `
 
 /* INPUTS */
-const inputUserLogin = `
-  input userLoginInput {
-    email: String!
-    password: String!
-  }
-`
-
 const inputUserFilters = `
   input usersFilters {
     id: Int
@@ -97,17 +72,17 @@ const inputUserInput = `
 
 const inputUserData = `
   input userData {
-    givenName: String!
-    familyName: String!
-    email: String!
-    password: String!
-    id_user_profile: Int!
-    active: Boolean!
+    name: String
+    surname: String
+    email: String
+    phone: String
+    username: String
+    password: String
+    enabled: Boolean
   }
 `
 
 export const inputs = `
-  ${inputUserLogin}
   ${inputUserFilters}
   ${inputUserInput}
   ${inputUserData}

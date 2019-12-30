@@ -8,10 +8,9 @@ const alterarUsuario = ({ id, userData }, ctx) => {
     ctx.knex('user')
       .update({
         ...dados,
-        password: userData.password && crypto.createHmac('sha256', process.env.HASH_SECRET).update(password).digest('hex'),
-        updated_by: ctx.user.id,
+        password: !userData.password ? undefined : crypto.createHmac('sha256', process.env.HASH_SECRET).update(password).digest('hex'),
       })
-      .where('id_user', '=', id)
+      .where('id', '=', id)
       .then(() => {
         return listUsers(ctx, { filters: { id } })
       })
