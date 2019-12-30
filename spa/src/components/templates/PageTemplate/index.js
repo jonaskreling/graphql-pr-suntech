@@ -43,8 +43,6 @@ const PageTemplate = ({
   return (
     <Wrapper {...props}>
       <Header>{header}</Header>
-      {hero && <Hero>{hero}</Hero>}
-      {sponsor && <Sponsor>{sponsor}</Sponsor>}
       <Content>{children}</Content>
       <Footer>{footer}</Footer>
     </Wrapper>
@@ -53,8 +51,6 @@ const PageTemplate = ({
 
 PageTemplate.propTypes = {
   header: PropTypes.node.isRequired,
-  hero: PropTypes.node,
-  sponsor: PropTypes.node,
   footer: PropTypes.node.isRequired,
   children: PropTypes.any.isRequired,
 }

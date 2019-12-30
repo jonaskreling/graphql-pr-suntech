@@ -8,12 +8,16 @@ import { ApolloProvider } from 'react-apollo'
 import './i18n'
 import App from 'components/App'
 import { client } from './apolloConfig'
+import { ConfigProvider } from 'antd'
+import ptBR from 'antd/es/locale-provider/pt_BR'
 
 const renderApp = () => (
   <Suspense fallback={<h1>Loading...</h1>}>
     <ApolloProvider client={client}>
       <BrowserRouter>
-        <App />
+        <ConfigProvider locale={ptBR}>
+          <App />
+        </ConfigProvider>
       </BrowserRouter>
     </ApolloProvider>
   </Suspense>

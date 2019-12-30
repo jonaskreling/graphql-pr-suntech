@@ -1,10 +1,7 @@
 import React from 'react'
 import { Router, Switch, Route } from 'react-router-dom'
 import { createGlobalStyle, ThemeProvider } from 'styled-components'
-
-import { HomePage, LoginPage, NotFoundPage } from 'components'
-
-// https://github.com/diegohaz/arc/wiki/Styling
+import { HomePage, UsersPage, UserPage, LoginPage, NotFoundPage } from 'components'
 import theme from './themes/default'
 import history from './history'
 
@@ -13,6 +10,7 @@ const GlobalStyle = createGlobalStyle`
     margin: 0;
   }
 `
+
 const App = () => {
   return (
     <div>
@@ -20,7 +18,9 @@ const App = () => {
       <ThemeProvider theme={theme}>
         <Router history={history}>
           <Switch>
-            <Route path="/" component={HomePage} exact />
+            <Route path="/" component={UsersPage} exact />
+            <Route path="/usuario" component={UserPage} exact />
+            <Route path="/home" component={HomePage} exact />
             <Route path="/login" component={LoginPage} />
             <Route component={NotFoundPage} />
           </Switch>

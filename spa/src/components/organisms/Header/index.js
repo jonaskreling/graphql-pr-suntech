@@ -1,9 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 import { size } from 'styled-theme'
-
 import {
-  IconLink, PrimaryNavigation, Block, LoginLogoutButton, InternacionalizationMenu,
+  PrimaryNavigation, Block
 } from 'components'
 
 const Wrapper = styled(Block)`
@@ -33,10 +32,7 @@ const Header = (props) => {
   return (
     <Wrapper opaque reverse {...props}>
       <InnerWrapper>
-        <IconLink to="/" icon="tgs" height={120} />
         <StyledPrimaryNavigation reverse />
-        <InternacionalizationMenu />
-        <LoginLogoutButton />
       </InnerWrapper>
     </Wrapper>
   )
